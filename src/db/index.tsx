@@ -18,7 +18,11 @@ export async function addNote(note: string) {
 export async function getAllNotes() {
   try {
     const response = await getDocs(collection(db, collectionName));
-    return response;
+    const notes = response.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return notes;
   } catch (e) {
     console.error("Error get All Notes: ", e);
   }
