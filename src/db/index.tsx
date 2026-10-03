@@ -3,6 +3,12 @@ import { db } from "./firebaseconfig";
 
 const collectionName = "notes";
 
+export interface INote {
+  id: string;
+  date: Date;
+  note: string;
+}
+
 export async function addNote(note: string) {
   try {
     const docRef = await addDoc(collection(db, collectionName), {
@@ -18,9 +24,9 @@ export async function addNote(note: string) {
 export async function getAllNotes() {
   try {
     const response = await getDocs(collection(db, collectionName));
-    const notes = response.docs.map((doc) => ({
+    const notes: INote[] = response.docs.map((doc) => ({
       id: doc.id,
-      ...doc.data(),
+      ...(doc.data() as Omit<INote, "id">),
     }));
     return notes;
   } catch (e) {
