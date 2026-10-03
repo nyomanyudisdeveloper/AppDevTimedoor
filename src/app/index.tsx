@@ -1,18 +1,20 @@
 import AddFloatingButton from "@/components/AddFloatingButton";
 import { getAllNotes } from "@/db";
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const index = () => {
   const [notes, setNotes] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getAllNotes();
-      console.log("data 123 = ", data);
-    };
-    getData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        const data = await getAllNotes();
+        console.log("data 123 = ", data);
+      };
+      getData();
+    }, []),
+  );
   return (
     <View style={styles.mainContainer}>
       <View style={styles.containerHeader}>
